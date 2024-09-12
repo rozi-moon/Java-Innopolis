@@ -5,7 +5,7 @@ public class Lesson2 {
         Scanner sc = new Scanner(System.in);
         int a = sc.nextInt();
         int b = sc.nextInt();
-        int sum = a + b;
+        Integer sum = a + b;
         int minus = a - b;
         int mult = a * b;
         int mean = (a + b) / 2;
