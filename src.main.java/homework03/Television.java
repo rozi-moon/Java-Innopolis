@@ -1,4 +1,4 @@
-package lesson3;
+package homework03;
 
 public class Television {
     private Integer channel;
