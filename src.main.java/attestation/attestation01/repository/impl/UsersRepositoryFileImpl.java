@@ -11,10 +11,13 @@ import java.util.stream.Collectors;
 
 public class UsersRepositoryFileImpl implements UserRepository {
 
+    private static List<User> users = new ArrayList<>();
+
+    private static final String PATH = "resources/users.txt";
+
     @Override
     public void create(User user) {
-        List<User> users = new ArrayList<>();
-        try (FileWriter fileWriter = new FileWriter("resources/users.txt", true)) {
+        try (FileWriter fileWriter = new FileWriter(PATH, true)) {
             fileWriter.write("\n");
             fileWriter.write(user.parseUserToString());
             users.add(user);
@@ -26,7 +29,6 @@ public class UsersRepositoryFileImpl implements UserRepository {
 
     @Override
     public User findById(String id) {
-        List<User> users = findAll();
         return users.stream()
                 .filter(u -> u.getId().equals(id))
                 .findFirst()
@@ -35,9 +37,9 @@ public class UsersRepositoryFileImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        try (FileReader fileReader = new FileReader("resources/users.txt")) {
+        try (FileReader fileReader = new FileReader(PATH)) {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            List<User> users = bufferedReader.lines()
+            users = bufferedReader.lines()
                     .map(User::new)
                     .collect(Collectors.toList());
             return users;
@@ -48,8 +50,6 @@ public class UsersRepositoryFileImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        List<User> users = findAll();
-
         User userToUpdate = users.stream()
                 .filter(u -> u.getId().equals(user.getId()))
                 .findFirst()
@@ -57,7 +57,7 @@ public class UsersRepositoryFileImpl implements UserRepository {
 
         if (userToUpdate != null) {
             userToUpdate = user;
-            try (FileWriter fileWriter = new FileWriter("resources/users.txt", false)) {
+            try (FileWriter fileWriter = new FileWriter(PATH, false)) {
                 for (User u : users) {
                     if (u.getId().equals(userToUpdate.getId())) {
                         u = userToUpdate;
@@ -78,9 +78,8 @@ public class UsersRepositoryFileImpl implements UserRepository {
 
     @Override
     public void deleteById(String id) {
-        List<User> users = findAll();
         if (users.stream().anyMatch(u -> u.getId().equals(id))) {
-            try (FileWriter fileWriter = new FileWriter("resources/users.txt", false)) {
+            try (FileWriter fileWriter = new FileWriter(PATH, false)) {
                 users.removeIf(u -> u.getId().equals(id));
                 for (User user : users) {
                     fileWriter.write(user.parseUserToString());
@@ -98,10 +97,9 @@ public class UsersRepositoryFileImpl implements UserRepository {
 
     @Override
     public void deleteAll() {
-        List<User> users = findAll();
         users.clear();
 
-        try (FileWriter fileWriter = new FileWriter("resources/users.txt", false)) {
+        try (FileWriter fileWriter = new FileWriter(PATH, false)) {
             fileWriter.write("");
         } catch (IOException ioe) {
             throw new RuntimeException("Ошибка удаления всех пользователей");
