@@ -34,7 +34,7 @@ public class Card {
     private Boolean deleted = false;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private User user;
 
     @OneToMany(mappedBy = "card")

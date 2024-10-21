@@ -7,6 +7,9 @@ import ru.inno.java.dto.CardRequest;
 import ru.inno.java.dto.CardResponse;
 import ru.inno.java.service.CardService;
 
+//Этот код реализует контроллер для работы с картами в приложении на Java
+// с использованием Spring Framework и Lombok. Рассмотрим каждую часть кода и добавим комментарии:
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cards")
